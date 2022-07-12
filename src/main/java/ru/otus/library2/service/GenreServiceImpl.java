@@ -2,8 +2,8 @@ package ru.otus.library2.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.otus.library2.dao.GenreDao;
 import ru.otus.library2.domain.Genre;
+import ru.otus.library2.repository.GenreRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,25 +12,25 @@ import java.util.Optional;
 public class GenreServiceImpl implements  GenreService{
 
   @Autowired
-  private GenreDao genreDao;
+  private GenreRepository genreRepository;
 
   @Override
-  public void insertGenre(String name) {
-    genreDao.insertGenre(name);
+  public void insertGenre(Genre genre) {
+    genreRepository.save(genre);
   }
 
   @Override
   public Optional<Genre> readeGenreById(long id) {
-    return genreDao.readeGenreById(id);
+    return genreRepository.findById(id);
   }
 
   @Override
   public List<Genre> readeAllGenres() {
-    return genreDao.readeAllGenres();
+    return genreRepository.findAll();
   }
 
   @Override
   public void deleteGenreById(long id) {
-     genreDao.deleteGenreById(id);
+     genreRepository.deleteById(id);
   }
 }

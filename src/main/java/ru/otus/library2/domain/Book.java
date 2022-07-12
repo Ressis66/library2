@@ -46,7 +46,9 @@ public class Book {
     this.id = id;
     this.name = name;
   }
-
+  public Book( String name) {
+    this.name = name;
+  }
   public Book() {
   }
 
@@ -80,15 +82,5 @@ public class Book {
 
   public void setGenre(Genre genre) {
     this.genre = genre;
-  }
-
-  @Override
-  public String toString() {
-    return "Book{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", author=" + author +
-        ", genre=" + genre +
-        '}';
   }
 }
