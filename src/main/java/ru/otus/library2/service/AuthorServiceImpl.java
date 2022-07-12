@@ -2,8 +2,9 @@ package ru.otus.library2.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.otus.library2.dao.AuthorDao;
+
 import ru.otus.library2.domain.Author;
+import ru.otus.library2.repository.AuthorRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,25 +13,25 @@ import java.util.Optional;
 public class AuthorServiceImpl implements AuthorService{
 
   @Autowired
-  private AuthorDao authorDao;
+  private AuthorRepository authorRepository;
 
   @Override
-  public void insertAuthor(String name) {
-     authorDao.insertAuthor(name);
+  public void insertAuthor(Author author) {
+     authorRepository.save(author);
   }
 
   @Override
   public Optional<Author> readeAuthorById(long id) {
-    return authorDao.readeAuthorById(id);
+    return authorRepository.findById(id);
   }
 
   @Override
   public List<Author> readeAllAuthors() {
-    return authorDao.readeAllAuthors();
+    return authorRepository.findAll();
   }
 
   @Override
   public void deleteAuthorById(long id) {
-    authorDao.deleteAuthorById(id);
+    authorRepository.deleteById(id);
   }
 }

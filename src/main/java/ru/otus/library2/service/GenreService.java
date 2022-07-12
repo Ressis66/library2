@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenreService {
-  void insertGenre(String name) ;
+  void insertGenre(Genre genre) ;
   Optional<Genre> readeGenreById(long id);
   List<Genre> readeAllGenres();
   void deleteGenreById(long id);

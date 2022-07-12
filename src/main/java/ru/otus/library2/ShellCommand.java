@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.library2.domain.Author;
 import ru.otus.library2.domain.Book;
+import ru.otus.library2.domain.Genre;
 import ru.otus.library2.service.AuthorService;
 import ru.otus.library2.service.BookService;
 import ru.otus.library2.service.GenreService;
@@ -31,8 +32,8 @@ public class ShellCommand {
   @ShellMethod(key = "create_author", value = "create username")
   public void createAuthor(
       @ShellOption({"username", "u"}) String username)  throws IOException {
-
-    authorService.insertAuthor(username);
+    Author author = new Author(username);
+    authorService.insertAuthor(author);
 
   }
   @ShellMethod(key = "reade_authors", value = "read authors")
@@ -48,10 +49,10 @@ public class ShellCommand {
 
   @ShellMethod(key = "create_book", value = "create bookname")
   public void createBook(
-      @ShellOption({"bookname", "b"}) Book book
+      @ShellOption({"bookname", "b"}) String name
 
   )  throws IOException {
-
+ Book book = new Book(name);
     bookService.insertBook(book);
 
   }
@@ -69,8 +70,8 @@ public class ShellCommand {
   @ShellMethod(key = "create_genre", value = "create genrename")
   public void createGenre(
       @ShellOption({"genrename", "b"}) String genrename)  throws IOException {
-
-    genreService.insertGenre(genrename);
+    Genre genre = new Genre(genrename);
+    genreService.insertGenre(genre);
 
   }
 
