@@ -18,6 +18,8 @@ public class Author {
   @Column(name = "name", nullable = false, unique = true)
   private String name;
 
+
+
   public Long getId() {
     return id;
   }
@@ -49,4 +51,9 @@ public class Author {
 
   public Author() {
      }
+
+  @Override
+  public String toString() {
+    return name;
+  }
 }

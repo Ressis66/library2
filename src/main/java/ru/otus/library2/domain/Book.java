@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -27,11 +28,11 @@ public class Book {
  @Column(name = "name", nullable = false, unique = true)
  private String name;
 
- @OneToOne(targetEntity = Author.class, cascade = CascadeType.ALL)
+ @ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL)
  @JoinColumn(name = "author_id")
  private Author author;
 
- @OneToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
+ @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
  @JoinColumn(name = "genre_id")
  private Genre genre;
 
