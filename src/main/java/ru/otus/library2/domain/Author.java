@@ -36,18 +36,17 @@ public class Author {
     this.name = name;
   }
 
+
   public Author(Long id, String name) {
     this.id = id;
     this.name = name;
   }
 
+
   public Author(String name) {
     this.name = name;
   }
 
-  public Author(Long id) {
-    this.id = id;
-  }
 
   public Author() {
      }

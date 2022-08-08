@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AuthorService {
   void insertAuthor(Author author);
-  Optional<Author> readeAuthorById(long id);
+  Author readeAuthorById(long id);
   List<Author> readeAllAuthors();
   void deleteAuthorById(long id);
 }

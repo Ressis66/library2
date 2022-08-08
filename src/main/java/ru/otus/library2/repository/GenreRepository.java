@@ -11,8 +11,7 @@ public interface GenreRepository extends CrudRepository<Genre, Long> {
   @Override
   Genre save(Genre genre);
 
-  @Override
-  Optional<Genre> findById(Long id);
+  Genre findGenreById(Long id);
 
   @Override
   List<Genre> findAll();

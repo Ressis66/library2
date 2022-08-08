@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface GenreService {
   void insertGenre(Genre genre) ;
-  Optional<Genre> readeGenreById(long id);
+  Genre readeGenreById(long id);
   List<Genre> readeAllGenres();
   void deleteGenreById(long id);
 }

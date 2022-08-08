@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.otus.library2.domain.Author;
 import ru.otus.library2.domain.Book;
+import ru.otus.library2.domain.Genre;
+import ru.otus.library2.repository.AuthorRepository;
 import ru.otus.library2.repository.BookRepository;
 import org.springframework.ui.Model;
+import ru.otus.library2.repository.GenreRepository;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,6 +25,13 @@ public class BookController {
   @Autowired
   private BookRepository repository;
 
+  @Autowired
+  private AuthorRepository authorRepository;
+
+  @Autowired
+  private GenreRepository genreRepository;
+
+
   @GetMapping("/")
   public String listBook(Model model) {
     List<Book> books = repository.findAll();
@@ -28,17 +39,22 @@ public class BookController {
     return "bookList";
   }
 
-  @GetMapping("/signup")
-  public String showSignUpForm(Book book) {
-    return "add-book";
+  @ModelAttribute("authors")
+  public List<Author> getAuthors()  {
+    List<Author> authors = authorRepository.findAll();
+    return authors;
+  }
+
+  @ModelAttribute("genres")
+  public List<Genre> getGenres () {
+    List<Genre> genres = genreRepository.findAll();
+    return genres;
   }
 
   @PostMapping("/addBook")
-  public String addUser(@Valid Book book, BindingResult result, Model model) {
-    if (result.hasErrors()) {
-      return "add-book";
-    }
-
+  public String addBook(@ModelAttribute("book") Book book, @ModelAttribute("author.id") Long authorId, @ModelAttribute("genre.id") Long genreId, Model model) {
+    book.setAuthor(authorRepository.findAuthorById(authorId));
+    book.setGenre(genreRepository.findGenreById(genreId));
     repository.save(book);
     return "redirect:/";
   }
@@ -53,14 +69,25 @@ public class BookController {
   @Validated
   @PostMapping("/edit")
   public String updateBook(@Valid @ModelAttribute("book") Book book,
+                           @ModelAttribute("author.id") Long authorId, @ModelAttribute("genre.id") Long genreId,
                            BindingResult bindingResult, Model model) {
     if (bindingResult.hasErrors()) {
       return "edit";
     }
-
+    book.setAuthor(authorRepository.findAuthorById(authorId));
+    book.setGenre(genreRepository.findGenreById(genreId));
     repository.save(book);
     return "redirect:/";
   }
+
+
+
+  @GetMapping("/signup")
+  public String showSignUpForm(Book book) {
+    return "addBook";
+  }
+
+
 
   @GetMapping("/deleteBook")
   public String deleteBook(@RequestParam("BookId") Long id) {

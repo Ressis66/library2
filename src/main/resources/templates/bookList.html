@@ -42,6 +42,8 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
         <th>UPDATE</th>
         <th>DELETE</th>
     </tr>
@@ -50,7 +52,8 @@
     <tr th:each="book : ${books}">
         <td th:text="${book.id}"></td>
         <td th:text="${book.name}"></td>
-
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.genre}"></td>
         <td>
             <a th:href="@{/edit(id=${book.id})}" href="edit.html" th:text="#{edit-button-caption}">Edit</a>
         </td>

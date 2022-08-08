@@ -38,13 +38,27 @@
   <h2 class="mb-5">New Book</h2>
   <div class="row">
     <div class="col-md-6">
-      <form action="#" th:action="@{/addBook}" th:object="${book}" method="post">
+      <form action="addBook.html" th:action="@{/addBook}" th:object="${book}" method="post">
         <div class="row">
           <div class="form-group col-md-6">
             <label for="name" class="col-form-label">Name</label>
             <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
           </div>
+        </div>
+        <div class="row">
+          <label for="author-input">Author:</label>
+          <select class="form-control" th:field="*{author.id}" id="author-input">
+            <option value="0">select author</option>
+            <option th:each="author : ${authors}" th:value="${author.id}"  th:text="${author.name}"></option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="genre-input">Genre:</label>
+          <select class="form-control" th:field="*{genre.id}" id="genre-input">
+            <option value="0">select genre</option>
+            <option th:each="genre : ${genres}" th:value="${genre.id}"  th:text="${genre.name}"></option>
+          </select>
         </div>
         <div class="row">
           <div class="col-md-6 mt-5">

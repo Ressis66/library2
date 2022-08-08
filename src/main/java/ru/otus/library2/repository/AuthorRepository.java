@@ -10,8 +10,8 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
   @Override
   Author save(Author author);
 
-  @Override
-  Optional<Author> findById(Long id);
+
+  Author findAuthorById(Long id);
 
   @Override
   List<Author> findAll();
