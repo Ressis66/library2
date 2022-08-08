@@ -39,9 +39,6 @@ public class Genre {
     this.name = name;
   }
 
-  public Genre(Long id) {
-    this.id = id;
-  }
 
   public Genre(String name) {
     this.name = name;
@@ -51,8 +48,6 @@ public class Genre {
 
   @Override
   public String toString() {
-    return "Genre{" +
-        "name='" + name + '\'' +
-        '}';
+    return name ;
   }
 }
