@@ -16,8 +16,8 @@ public class AuthorServiceImpl implements AuthorService{
   private AuthorRepository authorRepository;
 
   @Override
-  public void insertAuthor(Author author) {
-     authorRepository.save(author);
+  public Author insertAuthor(Author author) {
+     return authorRepository.save(author);
   }
 
   @Override
@@ -34,4 +34,12 @@ public class AuthorServiceImpl implements AuthorService{
   public void deleteAuthorById(long id) {
     authorRepository.deleteById(id);
   }
+
+  @Override
+  public void updateAuthor(Long id, Author r) {
+    Author authorFromDb = authorRepository.findById(id).get();
+    System.out.println(authorFromDb.toString());
+    authorFromDb.setName(authorFromDb.getName());
+    authorRepository.save(authorFromDb);
+  };
 }

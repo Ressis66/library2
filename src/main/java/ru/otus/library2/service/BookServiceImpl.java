@@ -7,7 +7,6 @@ import ru.otus.library2.domain.Book;
 import ru.otus.library2.repository.BookRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Component
@@ -17,8 +16,8 @@ public class BookServiceImpl implements BookService {
   private BookRepository bookRepository;
 
   @Override
-  public  void insertBook(Book book) {
-    bookRepository.save(book);
+  public Book insertBook(Book book) {
+     return bookRepository.save(book);
   }
 
   @Override
@@ -35,4 +34,14 @@ public class BookServiceImpl implements BookService {
   public void deleteBookById(long id) {
     bookRepository.deleteById(id);
   }
+
+  @Override
+  public void updateBook(Long id, Book book) {
+    Book bookFromDb = bookRepository.findById(id).get();
+    System.out.println(bookFromDb.toString());
+    bookFromDb.setName(book.getName());
+    bookFromDb.setGenre(book.getGenre());
+    bookFromDb.setAuthor(book.getAuthor());
+    bookRepository.save(bookFromDb);
+  };
 }

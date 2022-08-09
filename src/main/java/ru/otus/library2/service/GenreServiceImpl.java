@@ -15,8 +15,8 @@ public class GenreServiceImpl implements  GenreService{
   private GenreRepository genreRepository;
 
   @Override
-  public void insertGenre(Genre genre) {
-    genreRepository.save(genre);
+  public Genre insertGenre(Genre genre) {
+    return genreRepository.save(genre);
   }
 
   @Override
@@ -33,4 +33,13 @@ public class GenreServiceImpl implements  GenreService{
   public void deleteGenreById(long id) {
      genreRepository.deleteById(id);
   }
+
+  @Override
+  public void updateGenre(Long id, Genre genre) {
+    Genre genreFromDb = genreRepository.findById(id).get();
+    System.out.println(genreFromDb.toString());
+    genreFromDb.setName(genre.getName());
+    genreRepository.save(genreFromDb);
+  };
+
 }
