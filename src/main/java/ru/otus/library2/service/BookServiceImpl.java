@@ -3,36 +3,45 @@ package ru.otus.library2.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.library2.dao.BookDao;
 import ru.otus.library2.domain.Book;
+import ru.otus.library2.repository.BookRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Component
 public class BookServiceImpl implements BookService {
 
   @Autowired
-  private BookDao bookDao;
+  private BookRepository bookRepository;
 
   @Override
-  public  void insertBook(Book book) {
-    bookDao.insertBook(book);
+  public Book insertBook(Book book) {
+     return bookRepository.save(book);
   }
 
   @Override
-  public Optional<Book> readeBookById(long id) {
-    return bookDao.readeBookById(id);
+  public Book readeBookById(long id) {
+    return bookRepository.findBookById(id);
   }
 
   @Override
   public List<Book> readeAllBooks() {
-    return bookDao.readeAllBooks();
+    return bookRepository.findAll();
   }
 
   @Override
   public void deleteBookById(long id) {
-    bookDao.deleteBookById(id);
+    bookRepository.deleteById(id);
   }
+
+  @Override
+  public void updateBook(Long id, Book book) {
+    Book bookFromDb = bookRepository.findById(id).get();
+    System.out.println(bookFromDb.toString());
+    bookFromDb.setName(book.getName());
+    bookFromDb.setGenre(book.getGenre());
+    bookFromDb.setAuthor(book.getAuthor());
+    bookRepository.save(bookFromDb);
+  };
 }

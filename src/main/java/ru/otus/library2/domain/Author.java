@@ -18,6 +18,8 @@ public class Author {
   @Column(name = "name", nullable = false, unique = true)
   private String name;
 
+
+
   public Long getId() {
     return id;
   }
@@ -34,26 +36,23 @@ public class Author {
     this.name = name;
   }
 
+
   public Author(Long id, String name) {
     this.id = id;
     this.name = name;
   }
 
+
   public Author(String name) {
     this.name = name;
   }
 
-  public Author(Long id) {
-    this.id = id;
-  }
 
   public Author() {
      }
 
   @Override
   public String toString() {
-    return "Author{" +
-        "name='" + name + '\'' +
-        '}';
+    return name;
   }
 }
