@@ -1,7 +1,6 @@
 package ru.otus.library2.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,27 +12,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.library2.domain.Author;
-import ru.otus.library2.service.AuthorService;
+import ru.otus.library2.repository.AuthorRepository;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 public class AuthorRestController {
 
+  private AuthorRepository repository;
 
   @Autowired
-  private AuthorService service;
+  public AuthorRestController(AuthorRepository repository) {
+    this.repository = repository;
+  }
 
   @GetMapping("/authors")
-  public ResponseEntity<List<Author>> listAuthor(Model model) {
-    List<Author> authors = service.readeAllAuthors();
+  public ResponseEntity<Flux<Author>> listAuthor(Model model) {
+    Flux<Author> authors = repository.findAll();
     return new ResponseEntity<>(authors, HttpStatus.OK);
   }
 
   @GetMapping(value = "/authors/{id}")
-  public ResponseEntity<Author> getBookById(@PathVariable(name = "id") Long id) {
-    Author author = service.readeAuthorById(id);
+  public ResponseEntity<Mono<Author>> getBookById(@PathVariable(name = "id") String id) {
+    Mono<Author> author = repository.findAuthorById(id);
 
     if (author == null) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -43,22 +47,27 @@ public class AuthorRestController {
   }
 
   @PostMapping(value = "/authors", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Author> addAuthor(@RequestBody Author author) {
+  public ResponseEntity<Mono<Author>> addAuthor(@RequestBody Author author) {
 
-    Author author1 = service.insertAuthor(author);
+    Mono<Author> author1 = repository.save(author);
     return new ResponseEntity<>(author1, HttpStatus.CREATED);
   }
 
-  @PutMapping("/authors")
-  public ResponseEntity<Author> updateAuthor(@RequestBody Author newAuthor, @PathVariable Long id) {
-    service.updateAuthor(id, newAuthor);
-    return new ResponseEntity<>(service.readeAuthorById(id), HttpStatus.OK);
-
+  @PutMapping("/authors/{id}")
+  public Mono<ResponseEntity<Author>> updateAuthor(@PathVariable(value = "id") String authorId,
+                                                 @Valid @RequestBody Author author) {
+    return repository.findById(authorId)
+        .flatMap(existingAuthor -> {
+          existingAuthor.setName(author.getName());
+          return repository.save(existingAuthor);
+        })
+        .map(updatedAuthor -> new ResponseEntity<>(updatedAuthor, HttpStatus.OK))
+        .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @DeleteMapping("/authors/{id}")
-  public ResponseEntity<Author> deleteAuthor(@PathVariable Long id) {
-    service.deleteAuthorById(id);
+  public ResponseEntity<Mono<Author>> deleteAuthor(@PathVariable String id) {
+    repository.deleteById(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

@@ -1,35 +1,31 @@
 package ru.otus.library2;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.library2.repository.AuthorRepository;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import reactor.core.publisher.Mono;
+import ru.otus.library2.domain.Author;
+import ru.otus.library2.domain.Book;
+import ru.otus.library2.domain.Genre;
 import ru.otus.library2.repository.BookRepository;
-import ru.otus.library2.repository.GenreRepository;
+import reactor.test.StepVerifier;
 
-@DataJpaTest
-@RunWith(SpringRunner.class)
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class Library2ApplicationTests {
-@Autowired
-	private AuthorRepository authorDao;
+@DataMongoTest
+public class Library2ApplicationTests {
 
 	@Autowired
-	private GenreRepository genreDao;
-
-	@Autowired
-	private BookRepository bookDao;
+	private BookRepository repository;
 
 	@Test
-	void contextLoads() {
+	public void shouldSetIdOnSave() {
+		Mono<Book> personMono = repository.save(new Book("12","Bill", new Author("Pit"), new Genre("Comedy")));
 
-		Assertions.assertNotNull(bookDao.findAll());
-		Assertions.assertNotNull(genreDao.findAll());
-	  Assertions.assertNotNull(authorDao.findAll());
+		StepVerifier
+				.create(personMono)
+				.assertNext(book -> assertNotNull(book.getId()))
+				.expectComplete()
+				.verify();
 	}
-
 }

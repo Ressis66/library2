@@ -1,21 +1,24 @@
 package ru.otus.library2.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.library2.domain.Author;
 
-import java.util.List;
-import java.util.Optional;
 
-public interface AuthorRepository extends JpaRepository<Author, Long> {
-  @Override
-  Author save(Author author);
+@Repository
+public interface AuthorRepository  extends ReactiveMongoRepository<Author,String> {
+    @Override
+    Mono<Author> save(Author author);
 
+    Mono<Author> findAuthorById(String id);
 
-  Author findAuthorById(Long id);
+    @Override
+    Flux<Author> findAll();
 
-  @Override
-  List<Author> findAll();
+    @Override
+    Mono<Void> deleteById(String id);
 
-  @Override
-  void deleteById(Long id);
 }

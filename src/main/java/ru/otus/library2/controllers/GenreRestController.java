@@ -14,25 +14,31 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.otus.library2.domain.Genre;
-import ru.otus.library2.service.GenreService;
+import ru.otus.library2.repository.GenreRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 public class GenreRestController {
 
+  private GenreRepository repository;
+
   @Autowired
-  private GenreService service;
+  public GenreRestController(GenreRepository repository) {
+    this.repository = repository;
+  }
 
   @GetMapping("/genres")
-  public ResponseEntity<List<Genre>> listGenre(Model model) {
-    List<Genre> genres = service.readeAllGenres();
+  public ResponseEntity<Flux<Genre>> listGenre(Model model) {
+    Flux<Genre> genres = repository.findAll();
     return new ResponseEntity<>(genres, HttpStatus.OK);
   }
 
   @GetMapping(value = "/genres/{id}")
-  public ResponseEntity<Genre> getGenreById(@PathVariable(name = "id") Long id) {
-    Genre genre = service.readeGenreById(id);
+  public ResponseEntity<Mono<Genre>> getGenreById(@PathVariable(name = "id") String id) {
+    Mono<Genre> genre = repository.findGenreById(id);
 
     if (genre == null) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -42,22 +48,27 @@ public class GenreRestController {
   }
 
   @PostMapping(value = "/genres", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Genre> addGenre(@RequestBody Genre genre) {
+  public ResponseEntity<Mono<Genre>> addGenre(@RequestBody Genre genre) {
 
-    Genre genre1 = service.insertGenre(genre);
+    Mono<Genre> genre1 = repository.save(genre);
     return new ResponseEntity<>(genre1, HttpStatus.CREATED);
   }
 
   @PutMapping("/genres/{id}")
-  public ResponseEntity<Genre> updateGenre(@RequestBody Genre newBook, @PathVariable Long id) {
-    service.updateGenre(id, newBook);
-    return new ResponseEntity<>(service.readeGenreById(id), HttpStatus.OK);
-
+  public Mono<ResponseEntity<Genre>> updateGenre(@PathVariable(value = "id") String genreId,
+                                                   @Valid @RequestBody Genre genre) {
+    return repository.findById(genreId)
+        .flatMap(existingGenre -> {
+          existingGenre.setName(genre.getName());
+          return repository.save(existingGenre);
+        })
+        .map(updatedGenre -> new ResponseEntity<>(updatedGenre, HttpStatus.OK))
+        .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @DeleteMapping("/genres/{id}")
-  public ResponseEntity<Genre> deleteGenre(@PathVariable Long id) {
-    service.deleteGenreById(id);
+  public ResponseEntity<Mono<Genre>> deleteGenre(@PathVariable String id) {
+    repository.deleteById(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

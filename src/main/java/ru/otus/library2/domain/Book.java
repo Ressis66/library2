@@ -1,64 +1,44 @@
 package ru.otus.library2.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Objects;
 
-@Entity
-
-@Table(name = "books")
-@NamedEntityGraph(name = "book-author-genre-entity-graph",
-    attributeNodes = {@NamedAttributeNode("author"),@NamedAttributeNode("genre")})
+@Document
 public class Book {
  @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Long id;
+ private String id;
 
- @Column(name = "name", nullable = false, unique = true)
  private String name;
 
- @ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL)
- @JoinColumn(name = "author_id")
  private Author author;
 
- @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
- @JoinColumn(name = "genre_id")
  private Genre genre;
 
-  public Book(Long id, String name, Author author, Genre genre) {
+  public Book(String  id, String name, Author author, Genre genre) {
     this.id = id;
     this.name = name;
     this.author = author;
     this.genre = genre;
   }
 
-  public Book(Long id, String name) {
+  public Book(String  id, String name) {
     this.id = id;
     this.name = name;
   }
   public Book( String name) {
-    this.name = name;
+        this.name = name;
   }
+
   public Book() {
   }
 
-  public Long getId() {
+  public String  getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String  id) {
     this.id = id;
   }
 

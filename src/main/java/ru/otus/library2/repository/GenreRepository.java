@@ -1,21 +1,26 @@
 package ru.otus.library2.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.library2.domain.Genre;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface GenreRepository extends CrudRepository<Genre, Long> {
-  @Override
-  Genre save(Genre genre);
-
-  Genre findGenreById(Long id);
+@Repository
+public interface GenreRepository extends ReactiveMongoRepository<Genre, String> {
 
   @Override
-  List<Genre> findAll();
+  Mono<Genre> save(Genre genre);
+
+  Mono<Genre> findGenreById(String id);
 
   @Override
-  void deleteById(Long id);
+  Flux<Genre> findAll();
+
+  @Override
+  Mono<Void> deleteById(String id);
+
 }
