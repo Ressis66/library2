@@ -16,7 +16,7 @@ import ru.otus.library2.repository.BookRepository;
 import org.springframework.ui.Model;
 import ru.otus.library2.repository.GenreRepository;
 
-import javax.validation.Valid;
+
 import java.util.List;
 
 @Controller
@@ -68,7 +68,7 @@ public class BookController {
 
   @Validated
   @PostMapping("/edit")
-  public String updateBook(@Valid @ModelAttribute("book") Book book,
+  public String updateBook( @ModelAttribute("book") Book book,
                            @ModelAttribute("author.id") Long authorId, @ModelAttribute("genre.id") Long genreId,
                            BindingResult bindingResult, Model model) {
     if (bindingResult.hasErrors()) {
