@@ -8,10 +8,10 @@ import reactor.core.publisher.Mono;
 import ru.otus.library2.domain.Author;
 
 
-@Repository
+
 public interface AuthorRepository  extends ReactiveMongoRepository<Author,String> {
     @Override
-    Mono<Author> save(Author author);
+    Mono<Author> insert(Author author);
 
     Mono<Author> findAuthorById(String id);
 

@@ -49,7 +49,7 @@ public class AuthorRestController {
   @PostMapping(value = "/authors", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Mono<Author>> addAuthor(@RequestBody Author author) {
 
-    Mono<Author> author1 = repository.save(author);
+    Mono<Author> author1 = repository.insert(author);
     return new ResponseEntity<>(author1, HttpStatus.CREATED);
   }
 

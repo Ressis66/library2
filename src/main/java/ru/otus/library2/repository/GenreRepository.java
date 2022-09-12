@@ -9,11 +9,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.library2.domain.Genre;
 
-@Repository
+
 public interface GenreRepository extends ReactiveMongoRepository<Genre, String> {
 
   @Override
-  Mono<Genre> save(Genre genre);
+  Mono<Genre> insert(Genre genre);
 
   Mono<Genre> findGenreById(String id);
 

@@ -11,10 +11,10 @@ import ru.otus.library2.domain.Book;
 
 import java.util.List;
 
-@Repository
+
 public  interface BookRepository extends ReactiveMongoRepository<Book, String> {
   @Override
-  Mono<Book> save(Book book);
+  Mono<Book> insert(Book book);
 
   Mono<Book> findBookById(String id);
 

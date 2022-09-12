@@ -50,7 +50,7 @@ public class GenreRestController {
   @PostMapping(value = "/genres", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Mono<Genre>> addGenre(@RequestBody Genre genre) {
 
-    Mono<Genre> genre1 = repository.save(genre);
+    Mono<Genre> genre1 = repository.insert(genre);
     return new ResponseEntity<>(genre1, HttpStatus.CREATED);
   }
 

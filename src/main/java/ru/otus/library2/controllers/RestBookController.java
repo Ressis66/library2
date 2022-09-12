@@ -48,7 +48,7 @@ public class RestBookController {
 
   @PostMapping(value = "/books", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Mono<Book>> addBook(@RequestBody Book book) {
-    Mono<Book> book1 = repository.save(book);
+    Mono<Book> book1 = repository.insert(book);
     return new ResponseEntity<>(book1, HttpStatus.CREATED);
   }
 
