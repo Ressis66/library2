@@ -1,28 +1,22 @@
 package ru.otus.library2.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "genres")
+
+@Document
 public class Genre {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private String  id;
 
-  @Column(name = "name", nullable = false, unique = true)
   private String name;
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String  id) {
     this.id = id;
   }
 
@@ -34,25 +28,20 @@ public class Genre {
     this.name = name;
   }
 
-  public Genre(Long id, String name) {
+  public Genre(String id, String name) {
     this.id = id;
     this.name = name;
-  }
-
-  public Genre(Long id) {
-    this.id = id;
   }
 
   public Genre(String name) {
     this.name = name;
   }
+
   public Genre() {
   }
 
   @Override
   public String toString() {
-    return "Genre{" +
-        "name='" + name + '\'' +
-        '}';
+    return name ;
   }
 }
