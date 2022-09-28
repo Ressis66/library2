@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+<form id="edit-form" action="edit.html" th:action="@{/edit(id=${book.id})}" th:method="post" th:object="${book}">
+    <h3 th:text = "#{book-form-header}">Book Info:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:value="*{id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="book-name-input">Name:</label>
+        <input id="book-name-input" name="name" type="text" th:value="*{name}" value="name of the book"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong book name error</div>
+    </div>
+
+    <div class="row">
+        <label for="author-input">Author:</label>
+            <select class="form-control" th:field="*{author.id}" id="author-input">
+            <option value="0">select author</option>
+            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="genre-input">Genre:</label>
+        <select class="form-control" th:field="*{genre.id}" id="genre-input">
+            <option value="0">select genre</option>
+            <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+        </select>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="#{save-button-caption}">Save</button>
+        <a href="bookList.html" th:href="@{/}"><button type="button" th:text="#{cancel-button-caption}">Cancel</button></a>
+    </div>
+
+
+</form>
+
+</body>
+</html>

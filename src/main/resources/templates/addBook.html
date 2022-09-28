@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h2 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container my-5">
+  <h2 class="mb-5">New Book</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <form action="addBook.html" th:action="@{/addBook}" th:object="${book}" method="post">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="name" class="col-form-label">Name</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+          </div>
+        </div>
+        <div class="row">
+          <label for="author-input">Author:</label>
+          <select class="form-control" th:field="*{author.id}" id="author-input">
+            <option value="0">select author</option>
+            <option th:each="author : ${authors}" th:value="${author.id}"  th:text="${author.name}"></option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="genre-input">Genre:</label>
+          <select class="form-control" th:field="*{genre.id}" id="genre-input">
+            <option value="0">select genre</option>
+            <option th:each="genre : ${genres}" th:value="${genre.id}"  th:text="${genre.name}"></option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mt-5">
+            <input type="submit" class="btn btn-primary" value="Add Book">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
