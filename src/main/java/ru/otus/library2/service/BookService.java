@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BookService {
   void insertBook (Book book);
-  Optional<Book> readeBookById(long id);
+  Book readeBookById(Long id);
   List<Book> readeAllBooks();
   void deleteBookById(long id);
 }

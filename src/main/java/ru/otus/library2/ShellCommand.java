@@ -6,9 +6,11 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.library2.domain.Author;
 import ru.otus.library2.domain.Book;
+import ru.otus.library2.domain.Comment;
 import ru.otus.library2.domain.Genre;
 import ru.otus.library2.service.AuthorService;
 import ru.otus.library2.service.BookService;
+import ru.otus.library2.service.CommentService;
 import ru.otus.library2.service.GenreService;
 
 
@@ -28,6 +30,8 @@ public class ShellCommand {
   @Autowired
   GenreService genreService;
 
+  @Autowired
+  CommentService commentService;
 
   @ShellMethod(key = "create_author", value = "create username")
   public void createAuthor(
@@ -83,6 +87,20 @@ public class ShellCommand {
   @ShellMethod(key = "delete_genre", value = "delete genres")
   public void deleteGenreAccordingToId(@ShellOption({"id", "i"}) long id){
     genreService.deleteGenreById(id);
+  }
+
+  @ShellMethod(key = "create_comment", value = "create comment")
+  public void createComment(
+      @ShellOption({"username", "u"}) String commit, @ShellOption({"bookId", "bId"}) Long id)  throws IOException {
+    Book book = bookService.readeBookById(id);
+    Comment comment1 = new Comment(commit, book);
+
+  }
+  @ShellMethod(key = "reade_comments", value = "reade comments")
+  public void readeCommentsByBook(
+      @ShellOption({"bookId", "bId"}) Long id)  throws IOException {
+    List<Comment> comment = commentService.readeAllCommitsByBook(id);
+
   }
 
 }
