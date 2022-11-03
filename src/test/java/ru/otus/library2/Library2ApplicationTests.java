@@ -5,32 +5,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.library2.dao.AuthorDaoImpl;
-import ru.otus.library2.dao.BookDaoImpl;
-import ru.otus.library2.dao.GenreDaoImpl;
+import ru.otus.library2.repository.AuthorRepository;
+import ru.otus.library2.repository.BookRepository;
+import ru.otus.library2.repository.GenreRepository;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
-@Import({AuthorDaoImpl.class, BookDaoImpl.class, GenreDaoImpl.class})
+
 class Library2ApplicationTests {
-	@Autowired
-	private AuthorDaoImpl authorDao;
+@Autowired
+	private AuthorRepository authorDao;
 
 	@Autowired
-	private GenreDaoImpl genreDao;
+	private GenreRepository genreDao;
 
 	@Autowired
-	private BookDaoImpl bookDao;
+	private BookRepository bookDao;
 
 	@Test
 	void contextLoads() {
 
-		Assertions.assertNotNull(bookDao.readeAllBooks());
-		Assertions.assertNotNull(genreDao.readeAllGenres());
-		Assertions.assertNotNull(authorDao.readeAllAuthors());
+		Assertions.assertNotNull(bookDao.findAll());
+		Assertions.assertNotNull(genreDao.findAll());
+	  Assertions.assertNotNull(authorDao.findAll());
 	}
 
 }
