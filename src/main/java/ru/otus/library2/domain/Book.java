@@ -1,26 +1,42 @@
 package ru.otus.library2.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Objects;
 
 @Document
 public class Book {
+
  @Id
  private String id;
 
  private String name;
 
+ @DBRef
  private Author author;
 
+ @DBRef
  private Genre genre;
 
+ @DBRef
+ private List<Comment> commentList;
+
+ public Book(String  id, String name, Author author, Genre genre, List<Comment> commentList) {
+    this.id = id;
+    this.name = name;
+    this.author = author;
+    this.genre = genre;
+    this.commentList= commentList;
+  }
   public Book(String  id, String name, Author author, Genre genre) {
     this.id = id;
     this.name = name;
     this.author = author;
     this.genre = genre;
+
   }
 
   public Book(String  id, String name) {
@@ -72,11 +88,11 @@ public class Book {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Book book = (Book) o;
-    return Objects.equals(id, book.id) && Objects.equals(name, book.name) && Objects.equals(author, book.author) && Objects.equals(genre, book.genre);
+    return Objects.equals(id, book.id) && Objects.equals(name, book.name) && Objects.equals(author, book.author) && Objects.equals(genre, book.genre) && Objects.equals(commentList, book.commentList);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, author, genre);
+    return Objects.hash(id, name, author, genre, commentList);
   }
 }

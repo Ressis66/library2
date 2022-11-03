@@ -10,6 +10,7 @@ import ru.otus.library2.domain.Author;
 
 
 public interface AuthorRepository  extends ReactiveMongoRepository<Author,String> {
+
     @Override
     Mono<Author> insert(Author author);
 
