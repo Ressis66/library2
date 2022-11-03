@@ -1,60 +1,60 @@
 package ru.otus.library2.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+import java.util.List;
+import java.util.Objects;
 
-@Table(name = "books")
-@NamedEntityGraph(name = "book-author-genre-entity-graph",
-    attributeNodes = {@NamedAttributeNode("author"),@NamedAttributeNode("genre")})
+@Document
 public class Book {
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Long id;
 
- @Column(name = "name", nullable = false, unique = true)
+ @Id
+ private String id;
+
  private String name;
 
- @OneToOne(targetEntity = Author.class, cascade = CascadeType.ALL)
- @JoinColumn(name = "author_id")
+ @DBRef
  private Author author;
 
- @OneToOne(targetEntity = Genre.class, cascade = CascadeType.ALL)
- @JoinColumn(name = "genre_id")
+ @DBRef
  private Genre genre;
 
-  public Book(Long id, String name, Author author, Genre genre) {
+ @DBRef
+ private List<Comment> commentList;
+
+ public Book(String  id, String name, Author author, Genre genre, List<Comment> commentList) {
     this.id = id;
     this.name = name;
     this.author = author;
     this.genre = genre;
+    this.commentList= commentList;
   }
-
-  public Book(Long id, String name) {
+  public Book(String  id, String name, Author author, Genre genre) {
     this.id = id;
     this.name = name;
+    this.author = author;
+    this.genre = genre;
+
+  }
+
+  public Book(String  id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+  public Book( String name) {
+        this.name = name;
   }
 
   public Book() {
   }
 
-  public Long getId() {
+  public String  getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String  id) {
     this.id = id;
   }
 
@@ -82,13 +82,17 @@ public class Book {
     this.genre = genre;
   }
 
+
   @Override
-  public String toString() {
-    return "Book{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", author=" + author +
-        ", genre=" + genre +
-        '}';
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Book book = (Book) o;
+    return Objects.equals(id, book.id) && Objects.equals(name, book.name) && Objects.equals(author, book.author) && Objects.equals(genre, book.genre) && Objects.equals(commentList, book.commentList);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, author, genre, commentList);
   }
 }
